@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8">
+  <title>מחשבון אורך קנט בגליל</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      direction: rtl;
+      background-color: #f9f9f9;
+      padding: 20px;
+    }
+    h1 {
+      color: #333;
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input {
+      padding: 10px;
+      width: 100%;
+      margin-top: 5px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+    small {
+      color: #666;
+      display: block;
+      margin-top: 3px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 12px;
+      width: 100%;
+      font-size: 18px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #result {
+      margin-top: 25px;
+      font-size: 20px;
+      color: green;
+      text-align: center;
+    }
+    .image-container {
+      text-align: center;
+      margin-top: 10px;
+    }
+    .image-container img {
+      max-width: 100%;
+      height: auto;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>מחשבון אורך קנט בגליל</h1>
+
+  <label>קוטר חיצוני (במ"מ):
+    <input type="number" id="outer" placeholder="לדוגמה: 400">
+    <small>הקוטר החיצוני של הגליל – כולל הקנט.</small>
+    <div class="image-container">
+      <img id="imgOuter" alt="קוטר חיצוני">
+    </div>
+  </label>
+
+  <label>קוטר פנימי (במ"מ):
+    <input type="number" id="inner" placeholder="לדוגמה: 100">
+    <small>קוטר הליבה הפנימית – החור במרכז הגליל.</small>
+    <div class="image-container">
+      <img id="imgInner" alt="קוטר פנימי">
+    </div>
+  </label>
+
+  <label>עובי הקנט (במ"מ):
+    <input type="number" id="thickness" placeholder="לדוגמה: 1">
+    <small>עובי שכבת הקנט שמגולגלת סביב הליבה.</small>
+    <div class="image-container">
+      <img id="imgThickness" alt="עובי הקנט">
+    </div>
+  </label>
+
+  <button onclick="calculateLength()">חשב אורך</button>
+  <div id="result"></div>
+
+  <script>
+    // 🖼️ קישורים לתמונות (שנה כאן לפי הצורך)
+    const imgOuterSrc = "https://example.com/outer.png";
+    const imgInnerSrc = "https://example.com/inner.png";
+    const imgThicknessSrc = "https://example.com/thickness.png";
+
+    // טעינת התמונות לדף
+    document.getElementById("imgOuter").src = imgOuterSrc;
+    document.getElementById("imgInner").src = imgInnerSrc;
+    document.getElementById("imgThickness").src = imgThicknessSrc;
+
+    function calculateLength() {
+      const D = parseFloat(document.getElementById("outer").value);
+      const d = parseFloat(document.getElementById("inner").value);
+      const t = parseFloat(document.getElementById("thickness").value);
+      const resultDiv = document.getElementById("result");
+
+      if (isNaN(D) || isNaN(d) || isNaN(t) || D <= d || t <= 0) {
+        resultDiv.innerHTML = "❗ נא להזין ערכים תקינים. ודא שהקוטר החיצוני גדול מהפנימי.";
+        return;
+      }
+
+      const L = Math.PI * (Math.pow(D, 2) - Math.pow(d, 2)) / (4 * t);
+      const meters = (L / 1000).toFixed(2);
+
+      resultDiv.innerHTML = `האורך המשוער של הקנט הוא: <strong>${meters} מטרים</strong>`;
+    }
+  </script>
+</body>
+</html>
