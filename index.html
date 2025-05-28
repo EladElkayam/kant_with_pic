@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="he">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>מחשבון אורך קנט בגליל</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -55,40 +55,145 @@
     .image-container {
       text-align: center;
       margin-top: 10px;
-    }
-    .image-container img {
-      max-width: 100%;
-      height: auto;
+      max-width: 300px;
+      margin-left: auto;
+      margin-right: auto;
       border: 1px solid #ccc;
       border-radius: 10px;
-      margin-top: 5px;
+      background: #fff;
+      padding: 10px;
+      box-shadow: 0 0 6px rgba(0,0,0,0.1);
+    }
+    svg {
+      width: 100%;
+      height: 180px;
+      overflow: visible;
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg);}
+      to { transform: rotate(360deg);}
+    }
+    .cylinder {
+      transform-origin: 50% 50%;
+      animation: spin 15s linear infinite;
+    }
+    .cylinder-slow {
+      animation-duration: 30s;
+    }
+    .dimension-line {
+      stroke: #007bff;
+      stroke-width: 2;
+    }
+    .dimension-line-inner {
+      stroke: #0056b3;
+    }
+    .dimension-line-thickness {
+      stroke: #ff6600;
+      stroke-width: 3;
+    }
+
+    /* --- תוספת להתאמה לנייד --- */
+    @media (max-width: 480px) {
+      body {
+        padding: 10px;
+      }
+
+      h1 {
+        font-size: 22px;
+      }
+
+      input {
+        font-size: 14px;
+        padding: 8px;
+      }
+
+      button {
+        font-size: 16px;
+        padding: 10px;
+      }
+
+      #result {
+        font-size: 18px;
+      }
+
+      .image-container {
+        max-width: 100%;
+        padding: 8px;
+      }
+
+      svg {
+        height: auto;
+        max-width: 100%;
+      }
     }
   </style>
 </head>
 <body>
   <h1>מחשבון אורך קנט בגליל</h1>
 
+  <!-- קוטר חיצוני -->
   <label>קוטר חיצוני (במ"מ):
-    <input type="number" id="outer" placeholder="לדוגמה: 400">
+    <input type="number" id="outer" placeholder="לדוגמה: 400" />
     <small>הקוטר החיצוני של הגליל – כולל הקנט.</small>
-    <div class="image-container">
-      <img id="imgOuter" alt="קוטר חיצוני">
+    <div class="image-container" aria-label="אנימציה של קוטר חיצוני">
+      <svg viewBox="0 0 300 180" role="img" aria-labelledby="outerTitle">
+        <title id="outerTitle">אנימציה של קוטר חיצוני</title>
+        <defs>
+          <marker id="arrowRight" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#007bff"/>
+          </marker>
+          <marker id="arrowLeft" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto-start-reverse" markerUnits="strokeWidth">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#007bff"/>
+          </marker>
+        </defs>
+        <circle class="cylinder" cx="150" cy="90" r="70" fill="#b3d4fc" stroke="#007bff" stroke-width="4" />
+        <circle cx="150" cy="90" r="30" fill="#f9f9f9" stroke="#0056b3" stroke-width="2" />
+        <line x1="80" y1="90" x2="220" y2="90" class="dimension-line" marker-start="url(#arrowLeft)" marker-end="url(#arrowRight)" />
+      </svg>
     </div>
   </label>
 
+  <!-- קוטר פנימי -->
   <label>קוטר פנימי (במ"מ):
-    <input type="number" id="inner" placeholder="לדוגמה: 100">
+    <input type="number" id="inner" placeholder="לדוגמה: 100" />
     <small>קוטר הליבה הפנימית – החור במרכז הגליל.</small>
-    <div class="image-container">
-      <img id="imgInner" alt="קוטר פנימי">
+    <div class="image-container" aria-label="אנימציה של קוטר פנימי">
+      <svg viewBox="0 0 300 180" role="img" aria-labelledby="innerTitle">
+        <title id="innerTitle">אנימציה של קוטר פנימי</title>
+        <defs>
+          <marker id="arrowRightInner" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#0056b3"/>
+          </marker>
+          <marker id="arrowLeftInner" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto-start-reverse" markerUnits="strokeWidth">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#0056b3"/>
+          </marker>
+        </defs>
+        <circle cx="150" cy="90" r="70" fill="#e0e7f3" stroke="#bbb" stroke-width="2" />
+        <circle class="cylinder cylinder-slow" cx="150" cy="90" r="30" fill="#f9f9f9" stroke="#0056b3" stroke-width="4" />
+        <line x1="120" y1="90" x2="180" y2="90" class="dimension-line dimension-line-inner" marker-start="url(#arrowLeftInner)" marker-end="url(#arrowRightInner)" />
+      </svg>
     </div>
   </label>
 
+  <!-- עובי הקנט -->
   <label>עובי הקנט (במ"מ):
-    <input type="number" id="thickness" placeholder="לדוגמה: 1">
+    <input type="number" id="thickness" placeholder="לדוגמה: 1" />
     <small>עובי שכבת הקנט שמגולגלת סביב הליבה.</small>
-    <div class="image-container">
-      <img id="imgThickness" alt="עובי הקנט">
+    <div class="image-container" aria-label="אנימציה של עובי הקנט">
+      <svg viewBox="0 0 300 180" role="img" aria-labelledby="thicknessTitle">
+        <title id="thicknessTitle">אנימציה של עובי הקנט</title>
+        <defs>
+          <marker id="arrowRightOrange" markerWidth="6" markerHeight="6" refX="4" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#ff6600"/>
+          </marker>
+          <marker id="arrowLeftOrange" markerWidth="6" markerHeight="6" refX="4" refY="3" orient="auto-start-reverse" markerUnits="strokeWidth">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#ff6600"/>
+          </marker>
+        </defs>
+        <circle cx="150" cy="90" r="70" fill="#b3d4fc" stroke="#007bff" stroke-width="2" />
+        <circle cx="150" cy="90" r="60" fill="#f9f9f9" stroke="#0056b3" stroke-width="2" />
+        <line x1="210" y1="90" x2="230" y2="90" class="dimension-line-thickness" marker-start="url(#arrowLeftOrange)" marker-end="url(#arrowRightOrange)" />
+      </svg>
     </div>
   </label>
 
@@ -96,16 +201,6 @@
   <div id="result"></div>
 
   <script>
-    // 🖼️ קישורים לתמונות (שנה כאן לפי הצורך)
-	const imgOuterSrc = "outer.jpg";
-	const imgInnerSrc = "inner.jpg";
-	const imgThicknessSrc = "thickness.jpg";
-
-    // טעינת התמונות לדף
-    document.getElementById("imgOuter").src = imgOuterSrc;
-    document.getElementById("imgInner").src = imgInnerSrc;
-    document.getElementById("imgThickness").src = imgThicknessSrc;
-
     function calculateLength() {
       const D = parseFloat(document.getElementById("outer").value);
       const d = parseFloat(document.getElementById("inner").value);
